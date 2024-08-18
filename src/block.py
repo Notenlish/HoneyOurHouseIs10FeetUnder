@@ -7,7 +7,14 @@ from src.constants import SC_WIDTH, SC_HEIGHT
 
 class Block:
     def __init__(
-        self, position, size, degrees=0, friction=0.5, mass=10, color="red"
+        self,
+        position,
+        size,
+        degrees=0,
+        friction=0.5,
+        mass=10,
+        color="red",
+        outline="black",
     ) -> None:
         self.body = pymunk.Body()
         self.body.position = position
@@ -17,15 +24,17 @@ class Block:
         self.poly.mass = mass
         self.poly.friction = friction
         self.color = color
+        self.outline = outline
 
 
 class StaticBlock(Block):
-    def __init__(self, center, size, friction: float = 0.5) -> None:
+    def __init__(self, center, size, friction: float = 0.5, outline="black") -> None:
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
         self.poly = pymunk.Poly.create_box(self.body, size=size)
         self.body.position = center
         self.poly.friction = friction
         self.color = "green"
+        self.outline = "black"
 
 
 class WoodenSquare(Block):
@@ -59,6 +68,7 @@ class PlasticCircle(Block):
         self.poly.mass = mass
         self.poly.friction = friction
         self.color = "#cbdbfc"
+        self.outline = "grey"
 
 
 class SteelFrame(Block):

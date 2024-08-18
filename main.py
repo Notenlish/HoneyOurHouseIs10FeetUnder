@@ -1,7 +1,7 @@
 # /// script
 # dependencies = [
 #  "pygame",
-#  "pymunk"
+#  "pymunk",
 # ]
 # ///
 
@@ -11,8 +11,11 @@ import asyncio
 import pygame
 # fmt:off
 import pymunk
+# Idk if I need to spesifically import pymunk even tho I defined it at the top,
+# but just to be sure...
 # fmt:on
-from pymunk import pygame_util
+
+# from pymunk import pygame_util
 
 from src.physics import PhysicsManager
 from src.block import Block
@@ -23,7 +26,7 @@ from src.constants import SC_SIZE, SC_WIDTH, SC_HEIGHT, WEB, DEBUG
 from src.game import Game
 from src.ui import UI
 
-pygame_util.positive_y_is_up = False
+# pygame_util.positive_y_is_up = False
 
 
 class App:
@@ -45,7 +48,7 @@ class App:
         self.frame = 0
         self.elapsed_time = 0
 
-        self.debug_options = pygame_util.DrawOptions(self.screen)
+        # self.debug_options = pygame_util.DrawOptions(self.screen)
 
         self.physics = PhysicsManager()
         self.physics.add_kinematic(Block(position=(SC_WIDTH / 2, 0), size=[10, 50]))
@@ -78,7 +81,7 @@ class App:
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
 
     def draw(self):
-        self.screen.fill("black")
+        self.screen.fill("#94b1ed")
         self.physics.draw(self.screen, self.elapsed_time)
         # self.physics.space.debug_draw(self.debug_options)
         self.ui.draw(self.screen)

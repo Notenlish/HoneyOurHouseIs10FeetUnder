@@ -111,12 +111,13 @@ class PhysicsManager:
     def draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
         pygame.draw.polygon(screen, block.color, rotated)
+        pygame.draw.lines(screen, block.outline, True, rotated, 2)
 
     def draw_outline(self, screen: pygame.Surface, block: Block, time: float):
-
         if not block:
             return
         pygame.draw.lines(screen, "white", True, self.__get_rotated(block))
+        # pov: pygame doesnt have an dashed line function and you cant figure out how to do dashed line with offset
         return
         line_gap = 5
         rotated = self.__get_rotated(block)
@@ -215,7 +216,7 @@ class PhysicsManager:
             for arr in (self.statics, self.kinematics):
                 for block in arr:
                     self.draw_rotated(screen, block)
-                    pygame.draw.circle(screen, "white", block.body.position, 3)
+                    # pygame.draw.circle(screen, "white", block.body.position, 3)
 
         self.draw_outline(screen, self.hover_obj, time)
 
