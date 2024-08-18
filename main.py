@@ -59,6 +59,11 @@ class App:
                 raise SystemExit
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.game.spawn_block(pygame.mouse.get_pos())
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    self.game.change_block(-1)
+                if event.key == pygame.K_t:
+                    self.game.change_block(1)
 
     def update(self):
         # if fps low, only update every 2nd frame so it can get faster
