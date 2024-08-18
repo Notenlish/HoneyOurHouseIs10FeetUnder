@@ -1,7 +1,8 @@
 # /// script
 # dependencies = [
-#  "pygame",
 #  "pymunk",
+#  "numpy",
+#  "cffi"
 # ]
 # ///
 
@@ -10,6 +11,7 @@ import asyncio
 
 import pygame
 # fmt:off
+import _cffi_backend
 import pymunk
 # Idk if I need to spesifically import pymunk even tho I defined it at the top,
 # but just to be sure...
