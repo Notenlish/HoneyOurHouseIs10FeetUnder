@@ -39,3 +39,26 @@ fish in a bowl
 İf they die they say "oof" sound(custom made)
 
 for every alive people you get one more extra card
+
+# Particles
+
+dust fx for when buildings collapse
+maybe some fire as well
+
+oh wait what if there was chaos happening
+like children crying and whatnot
+meh idk
+
+either I make a goofy game with 'bla bla' as dialog with building
+or make a goofy game where theres chaos every time you mess something up
+
+https://www.youtube.com/watch?v=QUpUWL7xw5g
+https://discord.com/channels/772505616680878080/822265298085347368/1274696375841460234
+https://discord.com/channels/772505616680878080/772507247540437032/1142477416158220358
+
+use pygame_ecs :eyes: ?
+
+https://discord.com/channels/554137097229959188/772557289416163329/1274803091258212363
+https://discord.com/channels/554137097229959188/772557289416163329/1274798148585390235
+
+amsaa's particle system code: https://discord.com/channels/554137097229959188/772557289416163329/1274797886856757340
