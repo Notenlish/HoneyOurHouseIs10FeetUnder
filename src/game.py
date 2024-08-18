@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+import pygame
+
 from src.block import Block
 
 if TYPE_CHECKING:
@@ -12,6 +14,12 @@ class Game:
         self.highscore = 0
         self.physics = self.app.physics
 
-    def spawn_block(self, mpos:tuple[int, int]):
-        block = Block(mpos, [20,20], degrees=44)
+        self.cur_block = Block
+
+    def hover_block(self, screen: pygame.Surface, mpos: tuple[int, int]):
+        block = self.cur_block(mpos, [24, 24], degrees=0)
+        self.physics.set_hover_obj(block)
+
+    def spawn_block(self, mpos: tuple[int, int]):
+        block = self.cur_block(mpos, [24, 24], degrees=0)
         self.physics.add_kinematic(block)
