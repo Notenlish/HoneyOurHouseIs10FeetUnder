@@ -10,7 +10,8 @@ import pymunk
 
 from src.block import Block, StaticBlock
 
-from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG, WEB
+from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG, WEB, CACHE
+from src.util import blitRotate
 
 import time
 
@@ -93,7 +94,9 @@ class PhysicsManager:
         self.hover_obj = None
 
         bottom = StaticBlock(
-            center=[SC_WIDTH // 2, SC_HEIGHT - (50 / 2)], size=[SC_WIDTH, 50]
+            position=[SC_WIDTH // 2, SC_HEIGHT - (50 / 2)],
+            size=[SC_WIDTH, 50],
+            sprite_name="ground.png",
         )
         self.add_static(bottom)
 
@@ -136,8 +139,20 @@ class PhysicsManager:
 
     def draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
-        pygame.draw.polygon(screen, block.color, rotated)
+        # pygame.draw.polygon(screen, block.color, rotated)
         pygame.draw.lines(screen, block.outline, True, rotated, 2)
+
+        if block.shape_type != "circle":
+            pos = (block.poly.bb.left, block.poly.bb.bottom)
+            screen.blit(block.get_spr(), self.camera.to_display(pos))
+        else:
+            # DrawRotatedWithPivot()
+            rotated = block.get_spr()
+            og, angle = CACHE.get_cache(block.sprite_name, block.spr_size, 0)
+            blitRotate(
+                screen, og, rotated, block.body.position, og.get_rect().center, angle
+            )
+
         if block.body.is_sleeping:
             pygame.draw.circle(screen, block.outline, block.body.position, 5)
 

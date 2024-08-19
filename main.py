@@ -24,7 +24,7 @@ from src.block import Block
 
 import sys
 
-from src.constants import SC_SIZE, SC_WIDTH, SC_HEIGHT, WEB, DEBUG
+from src.constants import SC_SIZE, SC_WIDTH, SC_HEIGHT, WEB, DEBUG, COLORKEY
 from src.game import Game
 from src.ui import UI
 from src.camera import Camera
@@ -43,6 +43,7 @@ class App:
                 self.screen = pygame.display.set_mode(
                     SC_SIZE, pygame.SCALED | pygame.RESIZABLE, vsync=False
                 )
+        self.screen.set_colorkey(COLORKEY)
         self.clock = pygame.time.Clock()
         self.dt = 0
         self.fps = 0

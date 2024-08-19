@@ -27,14 +27,7 @@ and after every tour, they come and have some small talk or something
 Also add people as entities in the game
 like they have special sprites etc.
 
-Man
-Child(male or female)
-Woman
-Cat
-Dog
-Hamster
-Bird
-fish in a bowl
+Man, Child(male or female), Woman, Cat, Dog, Hamster, Bird, fish in a bowl
 
 İf they die they say "oof" sound(custom made)
 
@@ -42,12 +35,9 @@ for every alive people you get one more extra card
 
 # Particles
 
-dust fx for when buildings collapse
-maybe some fire as well
+dust fx for when buildings collapse. maybe some fire as well
 
-oh wait what if there was chaos happening
-like children crying and whatnot
-meh idk
+oh wait what if there was chaos happening. like children crying and whatnot. meh idk
 
 either I make a goofy game with 'bla bla' as dialog with building
 or make a goofy game where theres chaos every time you mess something up
@@ -66,6 +56,7 @@ amsaa's particle system code: https://discord.com/channels/554137097229959188/77
 # todo
 
 Do scrollbar for camera
+
 implement the spawning effect for spawning blocks(size starts small, then goes a bit overflow(size_mul is bigger than 1) then size_mul becomes 1)
 move block spawning logic to cards
 add apartments to cards
@@ -75,6 +66,7 @@ sfx?
 main menu & dialog(if possible)
 
 # performance
+
 test on family laptop
-If possible let objects fall asleep with Space.sleep_time_threshold. 
+If possible let objects fall asleep with Space.sleep_time_threshold.
 Tweak the Space.iterations property.
