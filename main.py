@@ -70,6 +70,8 @@ class App:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     self.game.spawn_block(pygame.mouse.get_pos())
+                if pygame.mouse.get_pressed()[0]:
+                    self.ui.click_card(pygame.mouse.get_pos())
             elif event.type == pygame.MOUSEWHEEL:
                 self.game.rotate_block(event.y)
             elif event.type == pygame.KEYDOWN:

@@ -17,9 +17,9 @@ class Game:
         self.highscore = 0
         self.physics = self.app.physics
 
-        self.blocks = [WoodenSquare, WoodenLongRect, PlasticCircle, SteelFrame]
+        self.blocks = []
         self.blocks_i = 0
-        self.cur_block: Block = self.blocks[self.blocks_i]
+        self.cur_block: Block = None
         self.obj_rot = 0
 
     def rotate_block(self, v: int):
@@ -34,17 +34,21 @@ class Game:
         self.cur_block = self.blocks[self.blocks_i]
 
     def hover_block(self, screen: pygame.Surface, mpos: tuple[int, int]):
+        if not self.blocks:
+            return
         pos = self.app.camera.to_game(mpos)
         pos = [pos.x, pos.y]
         block = self.cur_block(pos, degrees=self.obj_rot)
         self.physics.set_hover_obj(block)
-        
+
         # normally we wouldnt need to convert to game pos
         # However the physics func for drawing hover obj uses the __get_rotated func which converts from gamepos to display pos
         # so its just doing a -> b -> a
         # its bad, IK.
 
     def spawn_block(self, mpos: tuple[int, int]):
+        if not self.blocks:
+            return
         pos = self.app.camera.to_game(mpos)
         pos = [pos.x, pos.y]
         block = self.cur_block(pos, degrees=self.obj_rot)

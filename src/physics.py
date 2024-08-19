@@ -93,8 +93,9 @@ class PhysicsManager:
         self.statics = []
         self.hover_obj = None
 
+        # get rid of weird inconsistency
         bottom = StaticBlock(
-            position=[SC_WIDTH // 2, SC_HEIGHT - (50 / 2)],
+            position=[SC_WIDTH // 2 + 1, SC_HEIGHT - (100 / 2) + 4],
             size=[SC_WIDTH, 50],
             sprite_name="ground.png",
         )
@@ -151,7 +152,12 @@ class PhysicsManager:
             rotated = block.get_spr()
             og, angle = CACHE.get_cache(block.sprite_name, block.spr_size_mul, 0)
             blitRotate(
-                screen, og, rotated, self.camera.to_display(block.body.position), og.get_rect().center, angle
+                screen,
+                og,
+                rotated,
+                self.camera.to_display(block.body.position),
+                og.get_rect().center,
+                angle,
             )
 
         if block.body.is_sleeping:

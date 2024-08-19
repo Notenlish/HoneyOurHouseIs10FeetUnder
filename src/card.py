@@ -6,11 +6,15 @@ from src.util import lerp, ease_in_out, ease_in, ease_out
 
 
 class Card:
-    def __init__(self, block: Block, size=[45, 80], position=[0, 0]) -> None:
+    def __init__(
+        self, card_bg: pygame.Surface, block: Block, size=[45, 80], position=[0, 0]
+    ) -> None:
+        self.bg = card_bg
         self.rect = pygame.Rect(*position, *size)
         self.moved_rect = self.rect.copy()
         self.offset = pygame.Vector2()
         self.hovered = False
+        self.held = False
         self.since_hover_raw = 0
         self.since_hover = 0
 
@@ -47,5 +51,8 @@ class Card:
         self.rect.center = pos
 
     def draw(self, screen: pygame.Surface):
-        pygame.draw.rect(screen, "grey", self.moved_rect)
-        pygame.draw.rect(screen, "black", self.moved_rect, width=2)
+        # pygame.draw.rect(screen, "grey", self.moved_rect)
+        # pygame.draw.rect(screen, "black", self.moved_rect, width=2)
+        screen.blit(self.bg, self.moved_rect.topleft)
+        if self.held:
+            pygame.draw.rect(screen, "white", self.moved_rect.inflate(4,4), width=2)

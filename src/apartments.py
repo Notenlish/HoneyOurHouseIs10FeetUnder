@@ -44,7 +44,7 @@ class Villa(Apartment):
         position,
     ) -> None:
         residents = 8
-        size = [96, 96]
+        size = [48, 96]
         mass = 150
         friction = 0.6
         super().__init__(position, residents, size, mass, friction)

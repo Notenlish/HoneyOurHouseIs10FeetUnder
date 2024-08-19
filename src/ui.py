@@ -18,14 +18,23 @@ class UI:
         pygame.font.init()
         self.font = pygame.Font("assets/font/pixelmix.ttf", 20)
 
+        self.card_bg = pygame.image.load("assets/card/card.png").convert()
+
         self.cards: list[Card] = [
-            Card(WoodenSquare),
-            Card(WoodenLongRect),
-            Card(PlasticCircle),
+            Card(self.card_bg, WoodenSquare),
+            Card(self.card_bg, WoodenLongRect),
+            Card(self.card_bg, PlasticCircle),
         ]
 
     def update(self, dt):
         self.hover_card(pygame.mouse.get_pos(), dt)
+
+    def click_card(self, mpos):
+        for card in self.cards:
+            if card.moved_rect.collidepoint(mpos):
+                card.held = True
+            else:
+                card.held = False
 
     def render_text_to(
         self,
