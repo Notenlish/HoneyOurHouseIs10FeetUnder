@@ -1,3 +1,8 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from main import App
+
 import math
 
 import pygame
@@ -5,7 +10,7 @@ import pymunk
 
 from src.block import Block, StaticBlock
 
-from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG
+from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG, WEB
 
 import time
 
@@ -69,21 +74,48 @@ def aaa(self, screen, block, time):
 
 
 class PhysicsManager:
-    def __init__(self) -> None:
+    def __init__(self, app: "App") -> None:
+        self.app = app
+        self.camera = app.camera
         self.space = pymunk.Space()
         self.space.gravity = 0, 981
+        print(self.space.iterations)
+
+        if WEB:
+            # 10% more perf :D
+            self.space.iterations = 9
+        # TODO: if web performance drops, allow user to tweak space.iterations property
+        # TODO: maybe enable this?
+        # self.space.sleep_time_threshold = 5.0
+
         self.kinematics: list[Block] = []
         self.statics = []
         self.hover_obj = None
 
-        bottom = StaticBlock([SC_WIDTH // 2, SC_HEIGHT - (10 / 2)], size=[SC_WIDTH, 10])
+        bottom = StaticBlock(
+            center=[SC_WIDTH // 2, SC_HEIGHT - (50 / 2)], size=[SC_WIDTH, 50]
+        )
         self.add_static(bottom)
+
+        self.circle_vertex_count = 15
+        self.circle_normalized_points = [
+            pymunk.Vec2d(math.cos(math.radians(rot)), math.sin(math.radians(rot)))
+            for rot in range(0, 360, 360 // self.circle_vertex_count)
+        ]
 
     def set_hover_obj(self, block: Block):
         self.hover_obj = block
 
     def update(self, dt: float):
         self.space.step(dt)
+
+        self.check_fallen()
+
+    def check_fallen(self):
+        for kinematic in self.kinematics:
+            # dont keep objects that have fallen off
+            if kinematic.body.position.y > 9999:
+                self.remove_kinematic(kinematic)
 
     def debug_draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
@@ -95,29 +127,26 @@ class PhysicsManager:
             vertices = block.poly.get_vertices()
         else:  # circle
             vertices = []
-            circle_steps = 10
-            for rot in range(0, 360, 360 // circle_steps):
-                rot = math.radians(rot)
-                p = pymunk.Vec2d(
-                    math.cos(rot) * block.poly.radius, math.sin(rot) * block.poly.radius
-                )  # we only want local pos
-                vertices.append(p)
+            for v in self.circle_normalized_points:
+                vertices.append(v * block.poly.radius)
         for v in vertices:
             vertex = v.rotated(block.body.angle) + block.body.position
-            vertex: pymunk.Vec2d
-            rotated.append(vertex)
+            rotated.append(self.camera.to_display(vertex))
         return rotated
 
     def draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
         pygame.draw.polygon(screen, block.color, rotated)
         pygame.draw.lines(screen, block.outline, True, rotated, 2)
+        if block.body.is_sleeping:
+            pygame.draw.circle(screen, block.outline, block.body.position, 5)
 
     def draw_outline(self, screen: pygame.Surface, block: Block, time: float):
         if not block:
             return
         pygame.draw.lines(screen, "white", True, self.__get_rotated(block))
-        # pov: pygame doesnt have an dashed line function and you cant figure out how to do dashed line with offset
+        # pov: pygame doesnt have an dashed line function and you cant
+        # figure out how to do dashed line with offset
         return
         line_gap = 5
         rotated = self.__get_rotated(block)

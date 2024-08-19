@@ -62,3 +62,19 @@ https://discord.com/channels/554137097229959188/772557289416163329/1274803091258
 https://discord.com/channels/554137097229959188/772557289416163329/1274798148585390235
 
 amsaa's particle system code: https://discord.com/channels/554137097229959188/772557289416163329/1274797886856757340
+
+# todo
+
+Do scrollbar for camera
+implement the spawning effect for spawning blocks(size starts small, then goes a bit overflow(size_mul is bigger than 1) then size_mul becomes 1)
+move block spawning logic to cards
+add apartments to cards
+add apartment spawning, score
+make some fx
+sfx?
+main menu & dialog(if possible)
+
+# performance
+test on family laptop
+If possible let objects fall asleep with Space.sleep_time_threshold. 
+Tweak the Space.iterations property.

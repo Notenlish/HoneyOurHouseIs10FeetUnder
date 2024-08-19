@@ -10,14 +10,14 @@ import asyncio
 
 
 import pygame
+
 # fmt:off
 import _cffi_backend
 import pymunk
+import pymunk.pygame_util
 # Idk if I need to spesifically import pymunk even tho I defined it at the top,
 # but just to be sure...
 # fmt:on
-
-# from pymunk import pygame_util
 
 from src.physics import PhysicsManager
 from src.block import Block
@@ -27,8 +27,7 @@ import sys
 from src.constants import SC_SIZE, SC_WIDTH, SC_HEIGHT, WEB, DEBUG
 from src.game import Game
 from src.ui import UI
-
-# pygame_util.positive_y_is_up = False
+from src.camera import Camera
 
 
 class App:
@@ -52,7 +51,9 @@ class App:
 
         # self.debug_options = pygame_util.DrawOptions(self.screen)
 
-        self.physics = PhysicsManager()
+        self.camera = Camera()
+
+        self.physics = PhysicsManager(self)
         self.physics.add_kinematic(Block(position=(SC_WIDTH / 2, 0), size=[10, 50]))
 
         self.game = Game(self)
@@ -62,25 +63,39 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 raise SystemExit
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.game.spawn_block(pygame.mouse.get_pos())
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    self.game.change_block(-1)
-                if event.key == pygame.K_t:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    self.game.spawn_block(pygame.mouse.get_pos())
+            elif event.type == pygame.MOUSEWHEEL:
+                self.game.rotate_block(event.y)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    self.game.change_block(0)
+                elif event.key == pygame.K_F1:
+                    self.camera.scroll.y += 100
+                elif event.key == pygame.K_2:
                     self.game.change_block(1)
+                elif event.key == pygame.K_3:
+                    self.game.change_block(2)
+                elif event.key == pygame.K_4:
+                    self.game.change_block(3)
+                elif event.key == pygame.K_5:
+                    self.game.change_block(4)
+                elif event.key == pygame.K_6:
+                    self.game.change_block(5)
 
     def update(self):
         # if fps low, only update every 2nd frame so it can get faster
         if self.fps < 45:
             if self.frame % 2:
-                self.physics.update(1 / 30)
+                self.physics.update(1 / 35)
         else:
             self.physics.update(self.dt)
         # is this overengineering? Or just too complicated?
         # dunno
 
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
+        self.ui.update(self.dt)
 
     def draw(self):
         self.screen.fill("#94b1ed")
