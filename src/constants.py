@@ -5,7 +5,7 @@ WEB = sys.platform in ("emscripten", "wasi")
 DEBUG = False
 SC_SIZE = SC_WIDTH, SC_HEIGHT = 640, 360
 
-COLORKEY = (255, 16, 240)
+COLORKEY = (0, 0, 0)
 
 
 # meh, wrong file but who cares
@@ -24,14 +24,13 @@ class Cache:
         for size in self.sizes:
             self._cache[name][size] = {}
             for rot in range(0, 360 + self.rot_step_size, self.rot_step_size):
-                rotated = pygame.transform.rotozoom(spr, rot, size)
-                surf = pygame.Surface(rotated.get_size())
-                surf.fill(COLORKEY)
-                rotated.set_colorkey((0, 0, 0))
-                surf.blit(rotated)
-                surf.set_colorkey(COLORKEY)
+                # DONT use rotozoom for colorkey as rotozoom results in weird black artifacts
+                # instead rotate and then scale
+                rotated = pygame.transform.scale_by(
+                    pygame.transform.rotate(spr, rot), size
+                )
 
-                self._cache[name][size][rot] = surf
+                self._cache[name][size][rot] = rotated
 
     def get_cache(self, name, size, rot):
         cached_rot = round(rot / self.rot_step_size) * self.rot_step_size

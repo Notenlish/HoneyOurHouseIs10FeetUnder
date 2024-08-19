@@ -8,6 +8,7 @@ import pymunk
 from math import radians
 
 from src.constants import SC_WIDTH, SC_HEIGHT, COLORKEY, CACHE
+from src.util import ease_in_out, ease_in, ease_out
 
 
 class Block:
@@ -53,16 +54,27 @@ class Block:
         self.poly.friction = friction
         self.color = color
         self.outline = outline
-        self.spr_size = 1.0
+        self.spr_size_mul = 1.0
+        self.time_alive = 0.0
 
     def get_spr(self):
         if not self.dont_cache:
             spr, _ = CACHE.get_cache(
-                self.sprite_name, self.spr_size, math.degrees(-self.body.angle)
+                self.sprite_name, self.spr_size_mul, math.degrees(-self.body.angle)
             )
             return spr
         else:
             return self.sprite
+
+    def update(self, dt):
+        self.time_alive += dt
+        max_time = 0.25
+        if self.time_alive > max_time:
+            self.spr_size_mul = 1
+        else:
+            # normalize to 1
+            v = self.time_alive * (1 / max_time)
+            self.spr_size_mul = 0.8 + 0.3 * ease_in(v)
 
 
 class StaticBlock(Block):

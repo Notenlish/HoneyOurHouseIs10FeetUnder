@@ -112,13 +112,14 @@ class PhysicsManager:
     def update(self, dt: float):
         self.space.step(dt)
 
-        self.check_fallen()
+        self.check_dynamic(dt)
 
-    def check_fallen(self):
+    def check_dynamic(self, dt):
         for kinematic in self.kinematics:
             # dont keep objects that have fallen off
             if kinematic.body.position.y > 9999:
                 self.remove_kinematic(kinematic)
+            kinematic.update(dt)
 
     def debug_draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
@@ -148,9 +149,9 @@ class PhysicsManager:
         else:
             # DrawRotatedWithPivot()
             rotated = block.get_spr()
-            og, angle = CACHE.get_cache(block.sprite_name, block.spr_size, 0)
+            og, angle = CACHE.get_cache(block.sprite_name, block.spr_size_mul, 0)
             blitRotate(
-                screen, og, rotated, block.body.position, og.get_rect().center, angle
+                screen, og, rotated, self.camera.to_display(block.body.position), og.get_rect().center, angle
             )
 
         if block.body.is_sleeping:

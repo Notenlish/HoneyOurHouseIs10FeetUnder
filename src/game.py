@@ -28,6 +28,7 @@ class Game:
         self.obj_rot %= 360
 
     def change_block(self, v: int):
+        return
         self.blocks_i = v
         self.blocks_i %= len(self.blocks)
         self.cur_block = self.blocks[self.blocks_i]
