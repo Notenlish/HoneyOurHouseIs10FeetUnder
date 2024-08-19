@@ -29,6 +29,8 @@ from src.game import Game
 from src.ui import UI
 from src.camera import Camera
 
+from src.background import Background
+
 
 class App:
     def __init__(self) -> None:
@@ -59,6 +61,8 @@ class App:
 
         self.game = Game(self)
         self.ui = UI(self)
+
+        self.bg = Background()
 
     def input(self):
         for event in pygame.event.get():
@@ -97,12 +101,14 @@ class App:
 
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
         self.ui.update(self.dt)
+        self.bg.update(self.dt)
 
     def draw(self):
         self.screen.fill("#94b1ed")
         self.physics.draw(self.screen, self.elapsed_time)
         # self.physics.space.debug_draw(self.debug_options)
         self.ui.draw(self.screen)
+        self.bg.draw(self.screen)
 
     def fps_limit(self):
         self.frame += 1

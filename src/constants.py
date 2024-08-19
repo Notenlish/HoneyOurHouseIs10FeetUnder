@@ -14,16 +14,16 @@ class Cache:
         self._cache = {}
         # 0.0 to 1.1
         self.sizes = [i / 10 for i in range(11 + 1)]
+        self.rot_step_size = 5
 
     def add_cache(self, name, spr):
         # cache already exists
         if self._cache.get(name, False):
             return
         self._cache[name] = {}
-        # TODO: measure cache size, increase step size to like 10
         for size in self.sizes:
             self._cache[name][size] = {}
-            for rot in range(0, 360 + 1, 1):
+            for rot in range(0, 360 + self.rot_step_size, self.rot_step_size):
                 rotated = pygame.transform.rotozoom(spr, rot, size)
                 surf = pygame.Surface(rotated.get_size())
                 surf.fill(COLORKEY)
@@ -34,9 +34,10 @@ class Cache:
                 self._cache[name][size][rot] = surf
 
     def get_cache(self, name, size, rot):
-        cached_rot = round(rot % 360)
+        cached_rot = round(rot / self.rot_step_size) * self.rot_step_size
+        cached_rot %= 360
         cached_size = round(size * 10) / 10
-        spr:pygame.Surface = self._cache[name][cached_size][cached_rot]
+        spr: pygame.Surface = self._cache[name][cached_size][cached_rot]
         return spr, cached_rot
 
 

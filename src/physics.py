@@ -140,7 +140,7 @@ class PhysicsManager:
     def draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)
         # pygame.draw.polygon(screen, block.color, rotated)
-        pygame.draw.lines(screen, block.outline, True, rotated, 2)
+        # pygame.draw.lines(screen, block.outline, True, rotated, 2)
 
         if block.shape_type != "circle":
             pos = (block.poly.bb.left, block.poly.bb.bottom)
