@@ -10,6 +10,7 @@ class Card:
         self, card_bg: pygame.Surface, block: Block, size=[45, 80], position=[0, 0]
     ) -> None:
         self.bg = card_bg
+        self.block = block
         self.rect = pygame.Rect(*position, *size)
         self.moved_rect = self.rect.copy()
         self.offset = pygame.Vector2()
@@ -17,6 +18,7 @@ class Card:
         self.held = False
         self.since_hover_raw = 0
         self.since_hover = 0
+        self.transition_time = 0.4
 
     def set_hover(self, mpos):
         if self.rect.collidepoint(mpos):
@@ -25,14 +27,13 @@ class Card:
             self.hovered = False
 
     def update(self, dt):
-        transition_time = 0.4
         if self.hovered:
             self.since_hover_raw += dt
         else:
             self.since_hover_raw -= dt
-        self.since_hover_raw = max(0, self.since_hover_raw)
+        self.since_hover_raw = min(max(0, self.since_hover_raw), self.transition_time)
 
-        time_input = self.since_hover_raw * (1 / transition_time)
+        time_input = self.since_hover_raw * (1 / self.transition_time)
 
         self.since_hover = min(time_input, 1)
         self.since_hover = ease_in_out(self.since_hover)
@@ -55,4 +56,4 @@ class Card:
         # pygame.draw.rect(screen, "black", self.moved_rect, width=2)
         screen.blit(self.bg, self.moved_rect.topleft)
         if self.held:
-            pygame.draw.rect(screen, "white", self.moved_rect.inflate(4,4), width=2)
+            pygame.draw.rect(screen, "white", self.moved_rect.inflate(4, 4), width=2)

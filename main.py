@@ -28,6 +28,8 @@ from src.constants import SC_SIZE, SC_WIDTH, SC_HEIGHT, WEB, DEBUG, COLORKEY
 from src.game import Game
 from src.ui import UI
 from src.camera import Camera
+from src.sounds import Sounds
+from src.particles import ParticleManager
 
 from src.background import Background
 
@@ -55,6 +57,8 @@ class App:
         # self.debug_options = pygame_util.DrawOptions(self.screen)
 
         self.camera = Camera()
+        self.sounds = Sounds()
+        self.particle_manager = ParticleManager()
 
         self.physics = PhysicsManager(self)
 
@@ -69,9 +73,9 @@ class App:
                 raise SystemExit
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
-                    self.game.spawn_block(pygame.mouse.get_pos())
-                if pygame.mouse.get_pressed()[0]:
-                    self.ui.click_card(pygame.mouse.get_pos())
+                    changed = self.ui.click_card(pygame.mouse.get_pos())
+                    if not changed:  # prevent card clicking from spawning block
+                        self.game.spawn_block(pygame.mouse.get_pos())
             elif event.type == pygame.MOUSEWHEEL:
                 self.game.rotate_block(event.y)
             elif event.type == pygame.KEYDOWN:
@@ -93,7 +97,7 @@ class App:
     def update(self):
         # if fps low, only update every 2nd frame so it can get faster
         if self.fps < 45:
-            if self.frame % 2:
+            if self.frame % 2 == 0:
                 self.physics.update(1 / 35)
         else:
             self.physics.update(self.dt)
@@ -103,13 +107,17 @@ class App:
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
         self.ui.update(self.dt)
         self.bg.update(self.dt)
+        self.particle_manager.update(self.dt)
 
     def draw(self):
         self.screen.fill("#94b1ed")
+        
+        self.bg.draw(self.screen)
         self.physics.draw(self.screen, self.elapsed_time)
         # self.physics.space.debug_draw(self.debug_options)
+        self.particle_manager.draw(self.screen)
+        
         self.ui.draw(self.screen)
-        self.bg.draw(self.screen)
 
     def fps_limit(self):
         self.frame += 1

@@ -70,3 +70,11 @@ main menu & dialog(if possible)
 test on family laptop
 If possible let objects fall asleep with Space.sleep_time_threshold.
 Tweak the Space.iterations property.
+
+
+wood
+metal
+ice
+plastic
+
+maybe add ropes???

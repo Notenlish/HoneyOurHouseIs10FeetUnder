@@ -10,8 +10,9 @@ import pymunk
 
 from src.block import Block, StaticBlock
 
-from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG, WEB, CACHE
+from src.constants import SC_HEIGHT, SC_WIDTH, DEBUG, WEB, CACHE, COLLTYPE_GROUND
 from src.util import blitRotate
+from src.collision_handler import CollisionHandler
 
 import time
 
@@ -89,6 +90,8 @@ class PhysicsManager:
         # TODO: maybe enable this?
         # self.space.sleep_time_threshold = 5.0
 
+        self.coll_handler = CollisionHandler(self)
+
         self.kinematics: list[Block] = []
         self.statics = []
         self.hover_obj = None
@@ -98,6 +101,7 @@ class PhysicsManager:
             position=[SC_WIDTH // 2 + 1, SC_HEIGHT - (100 / 2) + 4],
             size=[SC_WIDTH, 50],
             sprite_name="ground.png",
+            collision_type=COLLTYPE_GROUND,
         )
         self.add_static(bottom)
 
@@ -134,6 +138,7 @@ class PhysicsManager:
             vertices = []
             for v in self.circle_normalized_points:
                 vertices.append(v * block.poly.radius)
+
         for v in vertices:
             vertex = v.rotated(block.body.angle) + block.body.position
             rotated.append(self.camera.to_display(vertex))
@@ -278,6 +283,8 @@ class PhysicsManager:
     def add_kinematic(self, block: Block):
         self.kinematics.append(block)
         self.space.add(block.body, block.poly)
+
+        self.app.particle_manager.add_spawn_fx(self.__get_rotated(block))
 
     def remove_kinematic(self, block: Block):
         self.kinematics.remove(block)

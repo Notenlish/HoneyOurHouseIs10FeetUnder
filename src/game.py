@@ -27,6 +27,11 @@ class Game:
         self.obj_rot += MUL * v  # deg
         self.obj_rot %= 360
 
+    def set_block(self, block: Block):
+        self.blocks = [block]
+        self.cur_block = block
+        self.blocks_i = 0
+
     def change_block(self, v: int):
         return
         self.blocks_i = v
@@ -53,3 +58,7 @@ class Game:
         pos = [pos.x, pos.y]
         block = self.cur_block(pos, degrees=self.obj_rot)
         self.physics.add_kinematic(block)
+
+        self.blocks = []
+        self.cur_block = None
+        self.physics.set_hover_obj(None)

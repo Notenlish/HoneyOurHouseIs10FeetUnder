@@ -30,11 +30,15 @@ class UI:
         self.hover_card(pygame.mouse.get_pos(), dt)
 
     def click_card(self, mpos):
+        changed = False
         for card in self.cards:
-            if card.moved_rect.collidepoint(mpos):
+            if card.moved_rect.collidepoint(mpos) and not card.held:
                 card.held = True
+                changed = True
+                self.app.game.set_block(card.block)
             else:
                 card.held = False
+        return changed
 
     def render_text_to(
         self,

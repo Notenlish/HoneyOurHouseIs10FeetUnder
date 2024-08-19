@@ -7,7 +7,17 @@ import pymunk
 
 from math import radians
 
-from src.constants import SC_WIDTH, SC_HEIGHT, COLORKEY, CACHE
+from src.constants import (
+    SC_WIDTH,
+    SC_HEIGHT,
+    COLORKEY,
+    CACHE,
+    COLLTYPE_GROUND,
+    COLLTYPE_WOOD,
+    COLLTYPE_ICE,
+    COLLTYPE_METAL,
+    COLLTYPE_PLASTIC,
+)
 from src.util import ease_in_out, ease_in, ease_out
 
 
@@ -26,6 +36,7 @@ class Block:
         radius: int = None,
         sprite_name: str = None,
         dont_cache=False,
+        collision_type=COLLTYPE_WOOD,
     ) -> None:
         self.body = pymunk.Body(body_type=body_type)
         self.body.position = position
@@ -36,6 +47,7 @@ class Block:
         elif shape_type == "circle":
             self.shape_type = "circle"
             self.poly = pymunk.Circle(self.body, radius=radius)
+        self.poly.collision_type = collision_type
 
         self.sprite_name = sprite_name
         if self.sprite_name is None:
@@ -78,7 +90,14 @@ class Block:
 
 
 class StaticBlock(Block):
-    def __init__(self, position, size, degrees=0, sprite_name=None) -> None:
+    def __init__(
+        self,
+        position,
+        size,
+        degrees=0,
+        sprite_name=None,
+        collision_type=COLLTYPE_GROUND,
+    ) -> None:
         friction = 0.5
         mass = 20
         color = "green"
@@ -94,6 +113,7 @@ class StaticBlock(Block):
             body_type=pymunk.Body.STATIC,
             sprite_name=sprite_name,
             dont_cache=True,
+            collision_type=collision_type,
         )
 
 
@@ -147,6 +167,7 @@ class PlasticCircle(Block):
             shape_type="circle",
             radius=radius,
             sprite_name="plastic_circle.png",
+            collision_type=COLLTYPE_PLASTIC,
         )
 
 
@@ -163,4 +184,5 @@ class SteelFrame(Block):
             mass,
             color="#485257",
             sprite_name="steel_frame.png",
+            collision_type=COLLTYPE_METAL,
         )
