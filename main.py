@@ -57,12 +57,11 @@ class App:
         self.camera = Camera()
 
         self.physics = PhysicsManager(self)
-        self.physics.add_kinematic(Block(position=(SC_WIDTH / 2, 0), size=[10, 50]))
 
         self.game = Game(self)
         self.ui = UI(self)
 
-        self.bg = Background()
+        self.bg = Background(self)
 
     def input(self):
         for event in pygame.event.get():
