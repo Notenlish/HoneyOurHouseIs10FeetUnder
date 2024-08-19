@@ -58,12 +58,17 @@ amsaa's particle system code: https://discord.com/channels/554137097229959188/77
 Do scrollbar for camera
 
 implement the spawning effect for spawning blocks(size starts small, then goes a bit overflow(size_mul is bigger than 1) then size_mul becomes 1)
-move block spawning logic to cards
 add apartments to cards
 add apartment spawning, score
 make some fx
 sfx?
 main menu & dialog(if possible)
+windows build(with pyinstaller and exe to msi) also warn people to disable their windows defender before running
+add requirements.txt
+steps on how to run the source code
+link to the source code in itch.io description
+
+camera moving to keep up with the building height
 
 # performance
 
