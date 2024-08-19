@@ -81,7 +81,6 @@ class PhysicsManager:
         self.camera = app.camera
         self.space = pymunk.Space()
         self.space.gravity = 0, 981
-        print(self.space.iterations)
 
         if WEB:
             # 10% more perf :D

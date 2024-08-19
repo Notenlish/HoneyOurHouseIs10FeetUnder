@@ -4,6 +4,7 @@ import pygame
 
 
 from src.util import ease_in
+from src.amsa_particles import ParticleBox
 
 
 class Particles:
@@ -22,17 +23,34 @@ class Particles:
 
 class BlockSpawnParticles(Particles):
     def __init__(self, verts: list[pygame.Vector2]) -> None:
-        super().__init__(color="white", lifespan=0.5)
+        super().__init__(color="white", lifespan=0.8)
         self.particles: list[tuple[pygame.Vector2, pygame.Vector2]] = []
-        self.wanted_radius = 3
+        self.wanted_radius = 6
         self.radius = self.wanted_radius
         self.orig = None
 
-        self.spawn_particles(verts)
+        # self.spawn_amsa_particles(verts)
+        # self.spawn_particles(verts)
+
+    def spawn_amsa_particles(self, verts: list[pygame.Vector2]):
+        self.pbs = [
+            ParticleBox(
+                rect=(-10, 540, 800, 60),
+                shape="circle",
+                color=[[x + 128, x + 128, x + 128, 255] for x in range(127)],
+                lifetime=3,
+                vel=[(0, -50), (0, -100), "minmax"],
+                size=[15, 15],
+                angle=0,
+                size_overtime=[[(0, 0), 1]],
+            ),
+        ]
 
     def spawn_particles(self, verts: list[pygame.Vector2]):
         orig_total = pygame.Vector2()
         lines: list[list[pygame.Vector2, 2]] = []
+        r = pygame.Rect()
+        r.clamp()
         for i, vert in enumerate(verts):
             next_i = (i + 1) % len(verts)
             next_vert = verts[next_i]
@@ -64,7 +82,9 @@ class BlockSpawnParticles(Particles):
                 particle_pos_new = particle_pos.move_towards(self.orig, 5)
                 _dir = particle_pos - particle_pos_new
 
-                self.particles.append((particle_pos, _dir))
+                self.pbs = ParticleBox()
+
+                # self.particles.append((particle_pos, _dir))
                 point = new.copy()
 
                 # end of line
@@ -75,19 +95,28 @@ class BlockSpawnParticles(Particles):
         for particle_start, _dir in self.particles:
             normalized = self.alive_since * (1 / self.lifespan)
             particle_start += _dir * normalized * 0.5
-            pygame.draw.circle(screen, "white", particle_start, self.radius)
+            pygame.draw.circle(screen, self.color, particle_start, self.radius)
 
     def update(self, dt):
         self.alive_since += dt
 
-        normalized = self.alive_since * (1 / self.lifespan)
+        normalised = self.alive_since * (1 / self.lifespan)
+        normalised = min(max(normalised, 0), 1)
+        inv_normalised = 1.0 - normalised
 
-        print(normalized)
-        out = normalized * self.wanted_radius
+        half_lifespan = self.lifespan * 0.5
+        if normalised <= half_lifespan:
+            out = normalised * 2
+        else:
+            out = self.lifespan - (normalised - half_lifespan) * 2
 
-        # invert(particle big when spawning, then smol)
+        normalised * self.wanted_radius
 
-        self.radius = self.wanted_radius - out
+        self.radius = self.wanted_radius * out
+
+        base = pygame.Color(255, 255, 255)
+        addition = pygame.Color([normalised * 75] * 3)
+        self.color = base - addition
 
         if self.alive_since >= self.lifespan:
             return True
