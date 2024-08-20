@@ -1,4 +1,25 @@
 # HoneyOurHouseIs10FeetUnder
+source code for: https://notenlish.itch.io/honey-our-house-is-10-feet-deep
+gmtk 2024 entry
+## run instructions:
+
+Install Python 3.11/3.12
+
+https://www.python.org/downloads/release/python-3119/ and choose add to path in py installer 
+
+Open up cmd prompt, type:
+
+pip install pygame-ce 
+
+And 
+
+pip install pymunk
+
+pip install numpy
+
+then do:
+
+py main.py
 
 ## Game idea
 
