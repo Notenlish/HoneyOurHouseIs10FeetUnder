@@ -27,11 +27,11 @@ class UI:
         self.card_bg = pygame.image.load("assets/card/card.png").convert()
 
         self.available: list[Card] = [
-            Card(self.card_bg, "Wood\nSquare", WoodenSquare),
-            Card(self.card_bg, "Wood\nRect", WoodenLongRect),
-            Card(self.card_bg, "Steel\nFrame", SteelFrame),
-            Card(self.card_bg, "Plastic\nSquare", PlasticSquare),
-            Card(self.card_bg, "Ice\nBlock", IceBlock),
+            Card(self.card_bg, "Wood\nSquare", WoodenSquare, sort_val=100),
+            Card(self.card_bg, "Wood\nRect", WoodenLongRect, sort_val=200),
+            Card(self.card_bg, "Steel\nFrame", SteelFrame, sort_val=300),
+            Card(self.card_bg, "Plastic\nSquare", PlasticSquare, sort_val=400),
+            Card(self.card_bg, "Ice\nBlock", IceBlock, sort_val=500),
             # Card(self.card_bg, self.small_font, "Singular", SingularApartment),
             # Card(self.card_bg, self.small_font, "Villa", Villa),
             # Card(self.card_bg, self.small_font, "Family", FamilyHome),
@@ -50,13 +50,10 @@ class UI:
             c = deepcopy(self.available[i])
             self.cards.append(c)
 
-    def spawned(self):
-        new = []
-        for card in self.cards:
-            # if card is held, remove it
-            if not card.held:
-                new.append(card)
-        self.cards = new
+        self.cards = sorted(self.cards, key=lambda x: x.text)
+
+    def spawned(self, card):
+        self.cards.remove(card)
 
     def click_card(self, mpos):
         changed = False
@@ -64,7 +61,7 @@ class UI:
             if card.moved_rect.collidepoint(mpos) and not card.held:
                 card.held = True
                 changed = True
-                self.app.game.set_block(card.block)
+                self.app.game.set_block(card, card.block)
             else:
                 card.held = False
         return changed

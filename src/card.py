@@ -13,7 +13,9 @@ class Card:
         block: Block,
         size=[45, 80],
         position=[0, 0],
+        sort_val=0,
     ) -> None:
+        self.sort_val = sort_val
         self.bg = card_bg
         self.text = text
         self.block = block

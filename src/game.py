@@ -6,6 +6,8 @@ import pygame
 
 from src.block import Block, WoodenSquare, WoodenLongRect, PlasticCircle, SteelFrame
 
+from src.card import Card
+
 if TYPE_CHECKING:
     from main import App
 
@@ -21,6 +23,8 @@ class Game:
         self.blocks_i = 0
         self.cur_block: Block = None
         self.obj_rot = 0
+
+        self.card = None
 
         self.started = False
         self.lost = False
@@ -57,7 +61,8 @@ class Game:
         self.obj_rot += MUL * v  # deg
         self.obj_rot %= 360
 
-    def set_block(self, block: Block):
+    def set_block(self, card: Card, block: Block):
+        self.card = card
         self.blocks = [block]
         self.cur_block = block
         self.blocks_i = 0
@@ -84,7 +89,7 @@ class Game:
     def spawn_block(self, mpos: tuple[int, int]):
         if not self.blocks:
             return
-        self.app.ui.spawned()
+        self.app.ui.spawned(self.card)
         pos = self.app.camera.to_game(mpos)
         pos = [pos.x, pos.y]
         block = self.cur_block(pos, degrees=self.obj_rot)
@@ -93,5 +98,6 @@ class Game:
         self.blocks = []
         self.cur_block = None
         self.physics.set_hover_obj(None)
+        self.card = None
         if not self.started:
             self.start()
