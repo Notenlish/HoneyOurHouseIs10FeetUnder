@@ -9,14 +9,12 @@ class Card:
     def __init__(
         self,
         card_bg: pygame.Surface,
-        font: pygame.Font,
         text: str,
         block: Block,
         size=[45, 80],
         position=[0, 0],
     ) -> None:
         self.bg = card_bg
-        self.font = font
         self.text = text
         self.block = block
         self.rect = pygame.Rect(*position, *size)
@@ -59,7 +57,7 @@ class Card:
     def set_center(self, pos):
         self.rect.center = pos
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface, font: pygame.Font):
         # pygame.draw.rect(screen, "grey", self.moved_rect)
         # pygame.draw.rect(screen, "black", self.moved_rect, width=2)
         screen.blit(self.bg, self.moved_rect.topleft)
@@ -67,5 +65,5 @@ class Card:
             pygame.draw.rect(screen, "white", self.moved_rect.inflate(4, 4), width=2)
 
         render_text_to(
-            self.font, screen, self.moved_rect.move(4, 4).topleft, self.text, "white"
+            font, screen, self.moved_rect.move(4, 4).topleft, self.text, "white"
         )

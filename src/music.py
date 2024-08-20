@@ -22,3 +22,6 @@ class Music:
         path = self.music[name]
         pygame.mixer.music.load(path)
         pygame.mixer.music.play(loops, start, fade_ms)
+
+    def stop(self):
+        pygame.mixer.music.stop()

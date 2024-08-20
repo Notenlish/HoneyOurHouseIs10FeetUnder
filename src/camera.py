@@ -29,7 +29,7 @@ class Camera:
             {"val": max(self.go_up_time - 80, 0), "mul": 10},
         ]
 
-        if False:
+        if True:
             # testing purposes
             segments = [
                 {"val": max(self.go_up_time - 5, 0), "mul": 2},

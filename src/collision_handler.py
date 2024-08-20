@@ -58,9 +58,17 @@ class CollisionHandler:
             # also delete the object bcuz it collapsed
             pass
         return True
-    
-    def wood_steel_col(self,arbiter, space,data):
+
+    def wood_steel_col(self, arbiter, space, data):
         self.sounds.play_random_sound("wood")
+        return True
+
+    def ice_ice_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("ice")
+        return True
+
+    def ice_ground_col(self, arbiter,space,data):
+        self.sounds.play_random_sound("ice")
         return True
 
     def ice_wood_col(self, arbiter, space, data):
@@ -96,6 +104,10 @@ class CollisionHandler:
         self.add_handler(self.plastic_wood_col, COLLTYPE_PLASTIC, COLLTYPE_WOOD)
         self.add_handler(self.ice_wood_col, COLLTYPE_ICE, COLLTYPE_WOOD)
         self.add_handler(self.ice_steel_col, COLLTYPE_ICE, COLLTYPE_METAL)
+        self.add_handler(self.ice_ice_col, COLLTYPE_ICE, COLLTYPE_ICE)
+        self.add_handler(self.ice_ground_col, COLLTYPE_ICE, COLLTYPE_GROUND)
         self.add_handler(self.steel_steel_col, COLLTYPE_METAL, COLLTYPE_METAL)
         self.add_handler(self.steel_wood_col, COLLTYPE_METAL, COLLTYPE_WOOD)
         self.add_handler(self.steel_ground_col, COLLTYPE_METAL, COLLTYPE_GROUND)
+
+        # todo: use | operator for colltypes so I dont have to have a bajillion functions to play sounds

@@ -27,12 +27,25 @@ class Game:
         self.score_per_second = 1
 
     def increase_score(self, dt):
-        self.highscore += dt * self.score_per_second
+        if self.started:
+            self.highscore += dt * self.score_per_second
 
     def start(self):
         self.started = True
         self.lost = False
         self.app.music.play_music("game", fade_ms=10)
+        self.camera.go_up_time = 0
+
+    def restart(self):
+        self.started = False
+        self.lost = False
+        self.camera.go_up_time = 0
+        self.highscore = 0
+        new = self.app.physics.kinematics.copy()
+        for k in new:
+            self.app.physics.remove_kinematic(k)
+        self.app.physics.kinematics = []
+        self.app.music.stop()
 
     def end(self):
         self.started = False

@@ -15,6 +15,9 @@ from src.block import WoodenSquare, WoodenLongRect, SteelFrame, PlasticSquare, I
 from src.apartments import SingularApartment, Villa, FamilyHome
 
 
+from copy import deepcopy
+
+
 class UI:
     def __init__(self, app: "App") -> None:
         self.app = app
@@ -24,35 +27,34 @@ class UI:
         self.card_bg = pygame.image.load("assets/card/card.png").convert()
 
         self.available: list[Card] = [
-            Card(self.card_bg, self.small_font, "Wood\nSquare", WoodenSquare),
-            Card(self.card_bg, self.small_font, "Wood\nRect", WoodenLongRect),
-            Card(self.card_bg, self.small_font, "Steel\nFrame", SteelFrame),
-            Card(self.card_bg, self.small_font, "Plastic\nSquare", PlasticSquare),
-            Card(self.card_bg, self.small_font, "Ice\nBlock", IceBlock),
-            #Card(self.card_bg, self.small_font, "Singular", SingularApartment),
-            #Card(self.card_bg, self.small_font, "Villa", Villa),
-            #Card(self.card_bg, self.small_font, "Family", FamilyHome),
+            Card(self.card_bg, "Wood\nSquare", WoodenSquare),
+            Card(self.card_bg, "Wood\nRect", WoodenLongRect),
+            Card(self.card_bg, "Steel\nFrame", SteelFrame),
+            Card(self.card_bg, "Plastic\nSquare", PlasticSquare),
+            Card(self.card_bg, "Ice\nBlock", IceBlock),
+            # Card(self.card_bg, self.small_font, "Singular", SingularApartment),
+            # Card(self.card_bg, self.small_font, "Villa", Villa),
+            # Card(self.card_bg, self.small_font, "Family", FamilyHome),
         ]
-        self.cards: list[Card] = self.available
+        self.cards: list[Card] = []
 
     def update(self, dt):
         self.hover_card(pygame.mouse.get_pos(), dt)
 
-        if len(self.cards) == 0 and False:
+        if len(self.cards) == 0:
             self.spawn_cards()
 
     def spawn_cards(self):
-        return
         for _ in range(10):
-            i = round(1)
-            c = self.available[i]
+            i = round(random.random() * (len(self.available) - 1))
+            c = deepcopy(self.available[i])
             self.cards.append(c)
 
     def spawned(self):
-        return
         new = []
         for card in self.cards:
-            if not card.held and False:
+            # if card is held, remove it
+            if not card.held:
                 new.append(card)
         self.cards = new
 
@@ -71,6 +73,9 @@ class UI:
         self.draw_highscore(screen)
         self.draw_cards(screen)
 
+        if self.app.game.lost:
+            render_text_to(self.font, screen, (50, 50), "Press R To restart", "black")
+
     def draw_cards(self, screen: pygame.Surface):
         if not self.cards or not len(self.cards):
             return
@@ -85,7 +90,7 @@ class UI:
             pos = center + card_w * 1.05 * to_center * _dir  # 1.05 ==> add spacing
             card.set_center(pos)
 
-            card.draw(screen)
+            card.draw(screen, self.small_font)
 
     def hover_card(self, mpos, dt):
         for i, card in enumerate(self.cards):

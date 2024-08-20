@@ -85,13 +85,8 @@ class App:
             elif event.type == pygame.MOUSEWHEEL:
                 self.game.rotate_block(event.y)
             elif event.type == pygame.KEYDOWN:
-                if event.key==pygame.K_r:
-                    self.game.start()
-                    self.game.highscore=0
-                    while len(self.physics.kinematics)>0:
-                        for k in self.physics.kinematics:
-                            self.physics.remove_kinematic(k)
-                            self.camera.go_up_time=0     
+                if event.key == pygame.K_r:
+                    self.game.restart()
                 if event.key == pygame.K_1:
                     self.game.change_block(0)
                 elif event.key == pygame.K_F1:

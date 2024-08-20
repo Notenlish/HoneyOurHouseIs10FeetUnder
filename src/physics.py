@@ -134,6 +134,7 @@ class PhysicsManager:
 
             kinematic.update(dt)
         if lost:
+            print("lost :////")
             self.app.game.end()
 
     def check_block_visible(self, block: Block, game_rect: pygame.Rect):
