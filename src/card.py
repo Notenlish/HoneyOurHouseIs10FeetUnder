@@ -2,14 +2,22 @@ import pygame
 
 
 from src.block import Block
-from src.util import lerp, ease_in_out, ease_in, ease_out
+from src.util import lerp, ease_in_out, ease_in, ease_out, render_text_to
 
 
 class Card:
     def __init__(
-        self, card_bg: pygame.Surface, block: Block, size=[45, 80], position=[0, 0]
+        self,
+        card_bg: pygame.Surface,
+        font: pygame.Font,
+        text: str,
+        block: Block,
+        size=[45, 80],
+        position=[0, 0],
     ) -> None:
         self.bg = card_bg
+        self.font = font
+        self.text = text
         self.block = block
         self.rect = pygame.Rect(*position, *size)
         self.moved_rect = self.rect.copy()
@@ -57,3 +65,7 @@ class Card:
         screen.blit(self.bg, self.moved_rect.topleft)
         if self.held:
             pygame.draw.rect(screen, "white", self.moved_rect.inflate(4, 4), width=2)
+
+        render_text_to(
+            self.font, screen, self.moved_rect.move(4, 4).topleft, self.text, "white"
+        )

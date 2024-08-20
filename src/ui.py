@@ -8,22 +8,25 @@ if TYPE_CHECKING:
 import pygame
 
 from src.constants import SC_WIDTH, SC_HEIGHT
+from src.util import render_text_to
 from src.card import Card
-from src.block import WoodenSquare, WoodenLongRect, PlasticCircle, PlasticSquare
+from src.block import WoodenSquare, WoodenLongRect, SteelFrame, PlasticSquare, IceBlock
 
 
 class UI:
     def __init__(self, app: "App") -> None:
         self.app = app
         self.font = pygame.Font("assets/font/pixelmix.ttf", 20)
+        self.small_font = pygame.Font("assets/font/pixelmix.ttf", 10)
 
         self.card_bg = pygame.image.load("assets/card/card.png").convert()
 
         self.cards: list[Card] = [
-            Card(self.card_bg, WoodenSquare),
-            Card(self.card_bg, WoodenLongRect),
-            Card(self.card_bg, PlasticCircle),
-            Card(self.card_bg, PlasticSquare),
+            Card(self.card_bg, self.small_font, "Wood\nSquare", WoodenSquare),
+            Card(self.card_bg, self.small_font, "Wood\nRect", WoodenLongRect),
+            Card(self.card_bg, self.small_font, "Steel\nFrame", SteelFrame),
+            Card(self.card_bg, self.small_font, "Plastic\nSquare", PlasticSquare),
+            Card(self.card_bg, self.small_font, "Ice\nBlock", IceBlock),
         ]
 
     def update(self, dt):
@@ -39,19 +42,6 @@ class UI:
             else:
                 card.held = False
         return changed
-
-    def render_text_to(
-        self,
-        font,
-        surface: pygame.Surface,
-        pos,
-        text,
-        color,
-        antialias=False,
-        bgcol=None,
-    ):
-        surf = font.render(text, antialias, color, bgcol)
-        return surface.blit(surf, pos)
 
     def draw(self, screen: pygame.Surface):
         self.draw_highscore(screen)
@@ -82,4 +72,4 @@ class UI:
         text = f"Score: {self.app.game.highscore}"
         rect = self.font.render(text, False, "white").get_rect()
         rect.centerx = SC_WIDTH / 2
-        self.render_text_to(self.font, screen, rect.topleft, text, "white")
+        render_text_to(self.font, screen, rect.topleft, text, "white")

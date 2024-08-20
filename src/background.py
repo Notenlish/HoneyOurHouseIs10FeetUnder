@@ -27,7 +27,9 @@ class Cloud:
             self.rect.right = -5
 
     def draw(self, screen: pygame.Surface):
-        screen.blit(self.spr, self.camera.to_display(self.rect.topleft))
+        pos = self.camera.to_display(self.rect.topleft)
+        pos.y %= SC_HEIGHT * 3  # in case the user goes higher than 10 meters lol
+        screen.blit(self.spr, pos)
 
 
 class Background:
@@ -45,7 +47,9 @@ class Background:
             for _ in range(14):
                 spr_i = round(random.random() * (len(self.sprites) - 1))
                 spr = self.sprites[spr_i]
-                starty = SC_HEIGHT * (0.2) - ring * SC_HEIGHT * 0.7 + random.randint(-10, 10)
+                starty = (
+                    SC_HEIGHT * (0.2) - ring * SC_HEIGHT * 0.7 + random.randint(-20, 20)
+                )
                 self.clouds.append(Cloud(self, spr, starty))
 
     def update(self, dt: float):

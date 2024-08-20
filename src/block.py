@@ -206,3 +206,20 @@ class SteelFrame(Block):
             sprite_name="steel_frame.png",
             collision_type=COLLTYPE_METAL,
         )
+
+
+class IceBlock(Block):
+    def __init__(self, position, degrees=0) -> None:
+        size = [32, 32]
+        friction = 0.2
+        mass = 20
+        super().__init__(
+            position,
+            size,
+            degrees,
+            friction,
+            mass,
+            color="#485257",
+            sprite_name="ice.png",
+            collision_type=COLLTYPE_ICE,
+        )

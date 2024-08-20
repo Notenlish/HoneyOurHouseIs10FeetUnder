@@ -30,7 +30,7 @@ class Camera:
         ]
 
         if False:
-        # testing purposes
+            # testing purposes
             segments = [
                 {"val": max(self.go_up_time - 5, 0), "mul": 2},
                 {"val": max(self.go_up_time - 10, 0), "mul": 4},
@@ -44,10 +44,13 @@ class Camera:
             self.scroll.y += v * mul
 
     def go_up_auto(self, dt):
-        if self.app.game.started:
-            self.go_up_time += dt
-        if self.app.game.lost:
-            self.go_up_time -= dt * 3
+        if True:
+            if self.app.game.started:
+                self.go_up_time += dt
+            if self.app.game.lost:
+                self.go_up_time -= dt * 3
+        else:
+            self.go_up_time += dt * 5
         self.__move_cam()
 
     def to_game(self, pos):

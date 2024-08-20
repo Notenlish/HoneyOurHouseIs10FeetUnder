@@ -53,9 +53,34 @@ class CollisionHandler:
             self.sounds.play_random_sound("wood")
         if arbiter.total_impulse.length >= COLLAPSE_IMPULSE:
             print("WOW, building collapsed")
+            self.sounds.play_random_sound("wood_crumble")
             # TODO: play collapse sound
             # also delete the object bcuz it collapsed
             pass
+        return True
+    
+    def wood_steel_col(self,arbiter, space,data):
+        self.sounds.play_random_sound("wood")
+        return True
+
+    def ice_wood_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("ice")
+        return True
+
+    def ice_steel_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("ice")
+        return True
+
+    def steel_steel_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("steel")
+        return True
+
+    def steel_wood_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("steel")
+        return True
+
+    def steel_ground_col(self, arbiter, space, data):
+        self.sounds.play_random_sound("steel")
         return True
 
     def add_handler(self, func, type1, type2):
@@ -65,6 +90,12 @@ class CollisionHandler:
     def init_handlers(self):
         self.add_handler(self.wood_ground_col, COLLTYPE_WOOD, COLLTYPE_GROUND)
         self.add_handler(self.wood_wood_col, COLLTYPE_WOOD, COLLTYPE_WOOD)
+        self.add_handler(self.wood_steel_col, COLLTYPE_WOOD, COLLTYPE_METAL)
         self.add_handler(self.plastic_ground_col, COLLTYPE_PLASTIC, COLLTYPE_GROUND)
         self.add_handler(self.plastic_plastic_col, COLLTYPE_PLASTIC, COLLTYPE_PLASTIC)
         self.add_handler(self.plastic_wood_col, COLLTYPE_PLASTIC, COLLTYPE_WOOD)
+        self.add_handler(self.ice_wood_col, COLLTYPE_ICE, COLLTYPE_WOOD)
+        self.add_handler(self.ice_steel_col, COLLTYPE_ICE, COLLTYPE_METAL)
+        self.add_handler(self.steel_steel_col, COLLTYPE_METAL, COLLTYPE_METAL)
+        self.add_handler(self.steel_wood_col, COLLTYPE_METAL, COLLTYPE_WOOD)
+        self.add_handler(self.steel_ground_col, COLLTYPE_METAL, COLLTYPE_GROUND)

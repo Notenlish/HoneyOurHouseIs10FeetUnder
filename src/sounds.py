@@ -10,6 +10,10 @@ class Sounds:
 
         self.define_sound("wood", "wood")
         self.define_sound("plastic", "plastic")
+        self.define_sound("wood_crumble", "wood_crumble")
+        self.define_sound("ice", "ice")
+        self.define_sound("building_crumble", "building_crumble")
+        self.define_sound("steel", "steel")
 
     def define_sound(self, name, folder):
         self.sounds[name] = []

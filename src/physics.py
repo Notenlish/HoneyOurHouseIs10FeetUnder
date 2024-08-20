@@ -180,7 +180,7 @@ class PhysicsManager:
                 angle,
             )
 
-        if block.body.is_sleeping:
+        if block.body.is_sleeping and DEBUG:
             pygame.draw.circle(
                 screen, block.outline, self.camera.to_display(block.body.position), 5
             )
