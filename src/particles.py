@@ -1,3 +1,9 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from main import App
+
+
 import random
 
 import pygame
@@ -8,7 +14,7 @@ from src.amsa_particles import ParticleBox
 
 
 class Particles:
-    def __init__(self, color="white", lifespan=1.0) -> None:
+    def __init__(self, color="white", lifespan=0.5) -> None:
         self.color = color
         self.lifespan = lifespan
         self.alive_since = 0
@@ -30,7 +36,7 @@ class BlockSpawnParticles(Particles):
         self.orig = None
 
         # self.spawn_amsa_particles(verts)
-        # self.spawn_particles(verts)
+        self.spawn_particles(verts)
 
     def spawn_amsa_particles(self, verts: list[pygame.Vector2]):
         self.pbs = [
@@ -49,8 +55,6 @@ class BlockSpawnParticles(Particles):
     def spawn_particles(self, verts: list[pygame.Vector2]):
         orig_total = pygame.Vector2()
         lines: list[list[pygame.Vector2, 2]] = []
-        r = pygame.Rect()
-        r.clamp()
         for i, vert in enumerate(verts):
             next_i = (i + 1) % len(verts)
             next_vert = verts[next_i]
@@ -82,9 +86,7 @@ class BlockSpawnParticles(Particles):
                 particle_pos_new = particle_pos.move_towards(self.orig, 5)
                 _dir = particle_pos - particle_pos_new
 
-                self.pbs = ParticleBox()
-
-                # self.particles.append((particle_pos, _dir))
+                self.particles.append((particle_pos, _dir))
                 point = new.copy()
 
                 # end of line
@@ -123,7 +125,8 @@ class BlockSpawnParticles(Particles):
 
 
 class ParticleManager:
-    def __init__(self) -> None:
+    def __init__(self, app: "App") -> None:
+        self.app = app
         self.particles: list[Particles] = []
 
     def add_spawn_fx(self, verts):

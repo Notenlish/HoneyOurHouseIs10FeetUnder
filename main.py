@@ -58,7 +58,7 @@ class App:
 
         self.camera = Camera()
         self.sounds = Sounds()
-        self.particle_manager = ParticleManager()
+        self.particle_manager = ParticleManager(self)
 
         self.physics = PhysicsManager(self)
 
@@ -104,6 +104,8 @@ class App:
         # is this overengineering? Or just too complicated?
         # dunno
 
+        self.camera.go_up_auto(self.elapsed_time)
+
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
         self.ui.update(self.dt)
         self.bg.update(self.dt)
@@ -111,12 +113,12 @@ class App:
 
     def draw(self):
         self.screen.fill("#94b1ed")
-        
+
         self.bg.draw(self.screen)
         self.physics.draw(self.screen, self.elapsed_time)
         # self.physics.space.debug_draw(self.debug_options)
         self.particle_manager.draw(self.screen)
-        
+
         self.ui.draw(self.screen)
 
     def fps_limit(self):

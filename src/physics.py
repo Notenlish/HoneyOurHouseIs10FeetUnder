@@ -119,11 +119,27 @@ class PhysicsManager:
         self.check_dynamic(dt)
 
     def check_dynamic(self, dt):
+        lost = True
+        game_rect = self.camera.get_game_rect()
+
+        if not self.app.game.started:
+            lost = False
         for kinematic in self.kinematics:
             # dont keep objects that have fallen off
             if kinematic.body.position.y > 9999:
                 self.remove_kinematic(kinematic)
+
+            if self.check_block_visible(kinematic, game_rect):
+                lost = False
+
             kinematic.update(dt)
+        if lost:
+            print("LOST")
+
+    def check_block_visible(self, block: Block, game_rect: pygame.Rect):
+        if game_rect.collidepoint(block.body.position):
+            return True
+        return False
 
     def debug_draw_rotated(self, screen: pygame.Surface, block: Block):
         rotated = self.__get_rotated(block)

@@ -22,6 +22,8 @@ class Game:
         self.cur_block: Block = None
         self.obj_rot = 0
 
+        self.started = False
+
     def rotate_block(self, v: int):
         MUL = 10
         self.obj_rot += MUL * v  # deg
@@ -62,3 +64,4 @@ class Game:
         self.blocks = []
         self.cur_block = None
         self.physics.set_hover_obj(None)
+        self.started = True
