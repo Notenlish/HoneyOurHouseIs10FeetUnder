@@ -20,7 +20,7 @@ Plastic Circle
 Steel Frame
 Rope
 
-add some guy named jim and his wife
+Some guy named Jimmy and his wife
 They live in the apartment, and they just come
 and after every tour, they come and have some small talk or something
 
