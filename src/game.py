@@ -23,13 +23,16 @@ class Game:
         self.obj_rot = 0
 
         self.started = False
+        self.lost = False
 
     def start(self):
         self.started = True
+        self.lost = False
         self.app.music.play_music("game", fade_ms=10)
     
     def end(self):
         self.started = False
+        self.lost = True
         self.app.music.play_music("lost")
 
     def rotate_block(self, v: int):

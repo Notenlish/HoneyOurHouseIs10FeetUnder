@@ -34,6 +34,7 @@ class BlockSpawnParticles(Particles):
         self.wanted_radius = 6
         self.radius = self.wanted_radius
         self.orig = None
+        self.move_speed = 1
 
         # self.spawn_amsa_particles(verts)
         self.spawn_particles(verts)
@@ -85,6 +86,8 @@ class BlockSpawnParticles(Particles):
 
                 particle_pos_new = particle_pos.move_towards(self.orig, 5)
                 _dir = particle_pos - particle_pos_new
+                if _dir.length():
+                    _dir = _dir.normalize()
 
                 self.particles.append((particle_pos, _dir))
                 point = new.copy()
@@ -96,7 +99,7 @@ class BlockSpawnParticles(Particles):
     def draw(self, screen):
         for particle_start, _dir in self.particles:
             normalized = self.alive_since * (1 / self.lifespan)
-            particle_start += _dir * normalized * 0.5
+            particle_start += _dir * normalized * self.move_speed
             pygame.draw.circle(screen, self.color, particle_start, self.radius)
 
     def update(self, dt):

@@ -87,7 +87,7 @@ class PhysicsManager:
             self.space.iterations = 9
         # TODO: if web performance drops, allow user to tweak space.iterations property
         # TODO: maybe enable this?
-        # self.space.sleep_time_threshold = 5.0
+        self.space.sleep_time_threshold = 2.0
 
         self.coll_handler = CollisionHandler(self)
 
@@ -181,7 +181,9 @@ class PhysicsManager:
             )
 
         if block.body.is_sleeping:
-            pygame.draw.circle(screen, block.outline, block.body.position, 5)
+            pygame.draw.circle(
+                screen, block.outline, self.camera.to_display(block.body.position), 5
+            )
 
     def draw_outline(self, screen: pygame.Surface, block: Block, time: float):
         if not block:

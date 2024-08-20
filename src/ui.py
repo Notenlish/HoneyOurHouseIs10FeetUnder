@@ -9,7 +9,7 @@ import pygame
 
 from src.constants import SC_WIDTH, SC_HEIGHT
 from src.card import Card
-from src.block import WoodenSquare, WoodenLongRect, PlasticCircle
+from src.block import WoodenSquare, WoodenLongRect, PlasticCircle, PlasticSquare
 
 
 class UI:
@@ -23,6 +23,7 @@ class UI:
             Card(self.card_bg, WoodenSquare),
             Card(self.card_bg, WoodenLongRect),
             Card(self.card_bg, PlasticCircle),
+            Card(self.card_bg, PlasticSquare),
         ]
 
     def update(self, dt):

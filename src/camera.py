@@ -21,20 +21,34 @@ class Camera:
         r.topleft -= self.scroll
         return r
 
+    def __move_cam(self):
+        segments = [
+            {"val": max(self.go_up_time - 10, 0), "mul": 2},
+            {"val": max(self.go_up_time - 20, 0), "mul": 4},
+            {"val": max(self.go_up_time - 50, 0), "mul": 6},
+            {"val": max(self.go_up_time - 80, 0), "mul": 10},
+        ]
+
+        if False:
+        # testing purposes
+            segments = [
+                {"val": max(self.go_up_time - 5, 0), "mul": 2},
+                {"val": max(self.go_up_time - 10, 0), "mul": 4},
+                {"val": max(self.go_up_time - 20, 0), "mul": 6},
+                {"val": max(self.go_up_time - 30, 0), "mul": 10},
+            ]
+        self.scroll.y = 0
+        for segment in segments:
+            v = segment["val"]
+            mul = segment["mul"]
+            self.scroll.y += v * mul
+
     def go_up_auto(self, dt):
         if self.app.game.started:
             self.go_up_time += dt
-            segments = [
-                {"val": max(self.go_up_time - 10, 0), "mul": 2},
-                {"val": max(self.go_up_time - 20, 0), "mul": 4},
-                {"val": max(self.go_up_time - 50, 0), "mul": 6},
-                {"val": max(self.go_up_time - 80, 0), "mul": 10},
-            ]
-            self.scroll.y = 0
-            for segment in segments:
-                v = segment["val"]
-                mul = segment["mul"]
-                self.scroll.y += v * mul
+        if self.app.game.lost:
+            self.go_up_time -= dt * 3
+        self.__move_cam()
 
     def to_game(self, pos):
         if type(pos) != pygame.Vector2:

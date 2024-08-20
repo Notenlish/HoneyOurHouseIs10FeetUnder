@@ -55,9 +55,6 @@ amsaa's particle system code: https://discord.com/channels/554137097229959188/77
 
 # todo
 
-Do scrollbar for camera
-
-implement the spawning effect for spawning blocks(size starts small, then goes a bit overflow(size_mul is bigger than 1) then size_mul becomes 1)
 add apartments to cards
 add apartment spawning, score
 make some fx

@@ -171,6 +171,26 @@ class PlasticCircle(Block):
         )
 
 
+class PlasticSquare(Block):
+    def __init__(self, position, degrees=0) -> None:
+        friction = 0.4
+        mass = 5
+        friction = 0.4
+        self.color = "#cbdbfc"
+        self.outline = "grey"
+        super().__init__(
+            position,
+            [72, 72],
+            degrees,
+            friction,
+            mass,
+            self.color,
+            self.outline,
+            sprite_name="plastic_big.png",
+            collision_type=COLLTYPE_PLASTIC,
+        )
+
+
 class SteelFrame(Block):
     def __init__(self, position, degrees=0) -> None:
         size = [16, 48]
