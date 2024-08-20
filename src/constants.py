@@ -14,6 +14,7 @@ COLLTYPE_ICE = 4
 COLLTYPE_PLASTIC = 5
 
 COLLAPSE_IMPULSE = 1000
+WOOD_WOOD_SOUND_IMPULSE = 50
 
 
 # meh, wrong file but who cares

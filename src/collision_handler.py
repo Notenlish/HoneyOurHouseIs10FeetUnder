@@ -14,6 +14,7 @@ from src.constants import (
     COLLTYPE_METAL,
     COLLTYPE_PLASTIC,
     COLLAPSE_IMPULSE,
+    WOOD_WOOD_SOUND_IMPULSE,
 )
 
 
@@ -25,8 +26,27 @@ class CollisionHandler:
 
         self.init_handlers()
 
+    def plastic_ground_col(self, arbiter, space, data):
+        arbiter: pymunk.Arbiter = arbiter
+        self.sounds.play_random_sound("plastic")
+        return True
+
+    def plastic_wood_col(self, arbiter, space, data):
+        arbiter: pymunk.Arbiter = arbiter
+        self.sounds.play_random_sound("plastic")
+        return True
+
+    def plastic_plastic_col(self, arbiter, space, data):
+        arbiter: pymunk.Arbiter = arbiter
+        self.sounds.play_random_sound("plastic")
+        return True
+
+    def wood_wood_col(self, arbiter, space, data):
+        arbiter: pymunk.Arbiter = arbiter
+        self.sounds.play_random_sound("wood")
+        return True
+
     def wood_ground_col(self, arbiter, space, data):
-        # print(arbiter, data)
         # pov: type hints
         arbiter: pymunk.Arbiter = arbiter
         if arbiter.is_first_contact:
@@ -44,3 +64,7 @@ class CollisionHandler:
 
     def init_handlers(self):
         self.add_handler(self.wood_ground_col, COLLTYPE_WOOD, COLLTYPE_GROUND)
+        self.add_handler(self.wood_wood_col, COLLTYPE_WOOD, COLLTYPE_WOOD)
+        self.add_handler(self.plastic_ground_col, COLLTYPE_PLASTIC, COLLTYPE_GROUND)
+        self.add_handler(self.plastic_plastic_col, COLLTYPE_PLASTIC, COLLTYPE_PLASTIC)
+        self.add_handler(self.plastic_wood_col, COLLTYPE_PLASTIC, COLLTYPE_WOOD)

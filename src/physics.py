@@ -134,7 +134,7 @@ class PhysicsManager:
 
             kinematic.update(dt)
         if lost:
-            print("LOST")
+            self.app.game.end()
 
     def check_block_visible(self, block: Block, game_rect: pygame.Rect):
         if game_rect.collidepoint(block.body.position):

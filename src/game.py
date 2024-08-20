@@ -24,6 +24,14 @@ class Game:
 
         self.started = False
 
+    def start(self):
+        self.started = True
+        self.app.music.play_music("game", fade_ms=10)
+    
+    def end(self):
+        self.started = False
+        self.app.music.play_music("lost")
+
     def rotate_block(self, v: int):
         MUL = 10
         self.obj_rot += MUL * v  # deg
@@ -64,4 +72,5 @@ class Game:
         self.blocks = []
         self.cur_block = None
         self.physics.set_hover_obj(None)
-        self.started = True
+        if not self.started:
+            self.start()

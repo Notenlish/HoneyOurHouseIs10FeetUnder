@@ -15,7 +15,6 @@ from src.block import WoodenSquare, WoodenLongRect, PlasticCircle
 class UI:
     def __init__(self, app: "App") -> None:
         self.app = app
-        pygame.font.init()
         self.font = pygame.Font("assets/font/pixelmix.ttf", 20)
 
         self.card_bg = pygame.image.load("assets/card/card.png").convert()

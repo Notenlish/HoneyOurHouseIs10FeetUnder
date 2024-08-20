@@ -29,6 +29,7 @@ from src.game import Game
 from src.ui import UI
 from src.camera import Camera
 from src.sounds import Sounds
+from src.music import Music
 from src.particles import ParticleManager
 
 from src.background import Background
@@ -47,6 +48,9 @@ class App:
                 self.screen = pygame.display.set_mode(
                     SC_SIZE, pygame.SCALED | pygame.RESIZABLE, vsync=False
                 )
+        pygame.mixer.init(frequency=22050)
+        pygame.font.init()
+
         self.screen.set_colorkey(COLORKEY)
         self.clock = pygame.time.Clock()
         self.dt = 0
@@ -56,8 +60,10 @@ class App:
 
         # self.debug_options = pygame_util.DrawOptions(self.screen)
 
-        self.camera = Camera()
+        self.camera = Camera(self)
         self.sounds = Sounds()
+        self.music = Music()
+
         self.particle_manager = ParticleManager(self)
 
         self.physics = PhysicsManager(self)
@@ -104,7 +110,7 @@ class App:
         # is this overengineering? Or just too complicated?
         # dunno
 
-        self.camera.go_up_auto(self.elapsed_time)
+        self.camera.go_up_auto(self.dt)
 
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
         self.ui.update(self.dt)

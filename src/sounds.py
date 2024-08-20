@@ -6,10 +6,10 @@ import pygame
 
 class Sounds:
     def __init__(self) -> None:
-        pygame.mixer.init(frequency=22050)
         self.sounds = {}
 
         self.define_sound("wood", "wood")
+        self.define_sound("plastic", "plastic")
 
     def define_sound(self, name, folder):
         self.sounds[name] = []
