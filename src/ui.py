@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 import math
+import random
 
 if TYPE_CHECKING:
     from main import App
@@ -11,6 +12,7 @@ from src.constants import SC_WIDTH, SC_HEIGHT
 from src.util import render_text_to
 from src.card import Card
 from src.block import WoodenSquare, WoodenLongRect, SteelFrame, PlasticSquare, IceBlock
+from src.apartments import SingularApartment, Villa, FamilyHome
 
 
 class UI:
@@ -21,16 +23,38 @@ class UI:
 
         self.card_bg = pygame.image.load("assets/card/card.png").convert()
 
-        self.cards: list[Card] = [
+        self.available: list[Card] = [
             Card(self.card_bg, self.small_font, "Wood\nSquare", WoodenSquare),
             Card(self.card_bg, self.small_font, "Wood\nRect", WoodenLongRect),
             Card(self.card_bg, self.small_font, "Steel\nFrame", SteelFrame),
             Card(self.card_bg, self.small_font, "Plastic\nSquare", PlasticSquare),
             Card(self.card_bg, self.small_font, "Ice\nBlock", IceBlock),
+            #Card(self.card_bg, self.small_font, "Singular", SingularApartment),
+            #Card(self.card_bg, self.small_font, "Villa", Villa),
+            #Card(self.card_bg, self.small_font, "Family", FamilyHome),
         ]
+        self.cards: list[Card] = self.available
 
     def update(self, dt):
         self.hover_card(pygame.mouse.get_pos(), dt)
+
+        if len(self.cards) == 0 and False:
+            self.spawn_cards()
+
+    def spawn_cards(self):
+        return
+        for _ in range(10):
+            i = round(1)
+            c = self.available[i]
+            self.cards.append(c)
+
+    def spawned(self):
+        return
+        new = []
+        for card in self.cards:
+            if not card.held and False:
+                new.append(card)
+        self.cards = new
 
     def click_card(self, mpos):
         changed = False
@@ -69,7 +93,7 @@ class UI:
             card.update(dt)
 
     def draw_highscore(self, screen: pygame.Surface):
-        text = f"Score: {self.app.game.highscore}"
+        text = f"Score: {self.app.game.highscore:.0f}"
         rect = self.font.render(text, False, "white").get_rect()
         rect.centerx = SC_WIDTH / 2
         render_text_to(self.font, screen, rect.topleft, text, "white")

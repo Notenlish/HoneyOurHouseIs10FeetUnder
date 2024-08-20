@@ -113,6 +113,7 @@ class App:
         self.camera.go_up_auto(self.dt)
 
         self.game.hover_block(self.screen, pygame.mouse.get_pos())
+        self.game.increase_score(self.dt)
         self.ui.update(self.dt)
         self.bg.update(self.dt)
         self.particle_manager.update(self.dt)

@@ -24,12 +24,16 @@ class Game:
 
         self.started = False
         self.lost = False
+        self.score_per_second = 1
+
+    def increase_score(self, dt):
+        self.highscore += dt * self.score_per_second
 
     def start(self):
         self.started = True
         self.lost = False
         self.app.music.play_music("game", fade_ms=10)
-    
+
     def end(self):
         self.started = False
         self.lost = True
@@ -67,6 +71,7 @@ class Game:
     def spawn_block(self, mpos: tuple[int, int]):
         if not self.blocks:
             return
+        self.app.ui.spawned()
         pos = self.app.camera.to_game(mpos)
         pos = [pos.x, pos.y]
         block = self.cur_block(pos, degrees=self.obj_rot)
