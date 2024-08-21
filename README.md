@@ -1,6 +1,8 @@
 # HoneyOurHouseIs10FeetUnder
 source code for: https://notenlish.itch.io/honey-our-house-is-10-feet-deep
 gmtk 2024 entry
+
+Developed while I was on holiday lol
 ## run instructions:
 
 Install Python 3.11/3.12
