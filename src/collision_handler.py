@@ -52,6 +52,7 @@ class CollisionHandler:
         if arbiter.is_first_contact:
             self.sounds.play_random_sound("wood")
         if arbiter.total_impulse.length >= COLLAPSE_IMPULSE:
+            # instead of impulse, check for smth else
             print("WOW, building collapsed")
             self.sounds.play_random_sound("wood_crumble")
             # TODO: play collapse sound
@@ -67,7 +68,7 @@ class CollisionHandler:
         self.sounds.play_random_sound("ice")
         return True
 
-    def ice_ground_col(self, arbiter,space,data):
+    def ice_ground_col(self, arbiter, space, data):
         self.sounds.play_random_sound("ice")
         return True
 
